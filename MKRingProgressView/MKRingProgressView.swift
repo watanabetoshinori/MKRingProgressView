@@ -77,6 +77,16 @@ open class RingProgressView: UIView {
         }
     }
 
+    /// The width of the progress ring. Defaults to `20`.
+    @IBInspectable open var backgroundRingWidth: CGFloat {
+        get {
+            return ringProgressLayer.backgroundRingWidth
+        }
+        set {
+            ringProgressLayer.backgroundRingWidth = newValue
+        }
+    }
+
     /// The style of the progress line end. Defaults to `round`.
     @objc open var style: RingProgressViewStyle {
         get {

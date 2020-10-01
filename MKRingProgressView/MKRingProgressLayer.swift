@@ -53,6 +53,12 @@ open class RingProgressLayer: CALayer {
             setNeedsDisplay()
         }
     }
+
+    @objc open var backgroundRingWidth: CGFloat = 20 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
     /// The style of the progress line end (rounded or straight).
     @objc open var progressStyle: RingProgressViewStyle = .round {
@@ -167,6 +173,7 @@ open class RingProgressLayer: CALayer {
         let gradientRect = squareRect.integral
         
         let w = min(ringWidth, squareSize / 2)
+        let bw = min(backgroundRingWidth, squareSize / 2)
         let r = min(bounds.width, bounds.height) / 2 - w / 2
         let c = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
         let p = max(0.0, disableProgressAnimation ? progress : presentation()?.progress ?? 0.0)
@@ -180,16 +187,16 @@ open class RingProgressLayer: CALayer {
         
         let angle1 = angle > maxAngle ? maxAngle : angle
         
-        context.setLineWidth(w)
-        context.setLineCap(progressStyle.lineCap)
-        
         // Draw backdrop circle
-        
+        context.setLineWidth(bw)
         context.addPath(circlePath.cgPath)
         let bgColor = backgroundRingColor ?? startColor.copy(alpha: 0.15)!
         context.setStrokeColor(bgColor)
         context.strokePath()
-        
+
+        context.setLineWidth(w)
+        context.setLineCap(progressStyle.lineCap)
+
         // Draw solid arc
         
         if angle > maxAngle {
